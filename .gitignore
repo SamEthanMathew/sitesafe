@@ -1,0 +1,61 @@
+# SiteSafe .gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# Models / checkpoints / GGUFs (too large for git)
+*.gguf
+*.bin
+*.safetensors
+*.pt
+*.pth
+sitesafe-checkpoints/
+training/runs/
+training/outputs/
+
+# Generated SQLite DB (regenerate with build_osha_db.py)
+data/osha_regulations.db
+
+# Downloaded image datasets (regenerate with download_datasets.sh)
+data/datasets/
+data/raw/
+data/processed/
+
+# Evaluation results
+evaluation/results/
+evaluation/cache/
+
+# PDF reports
+*.pdf
+!docs/*.pdf
+
+# Calibrator artifacts
+app/calibrator.joblib
+
+# OS / IDE / Claude Code
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/

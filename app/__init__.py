@@ -1,0 +1,1 @@
+"""SiteSafe app package."""

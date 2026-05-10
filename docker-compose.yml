@@ -1,0 +1,46 @@
+# SiteSafe — one-command stack
+#
+# Bring up:
+#   docker-compose up
+#
+# Then visit http://localhost:7860
+#
+# The first run downloads Gemma 4 weights into the named ollama_data volume.
+# Subsequent runs are offline-capable — that's the whole point of SiteSafe.
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: sitesafe-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./training:/training:ro
+    # Uncomment for NVIDIA GPU acceleration. Requires nvidia-container-toolkit on the host.
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           capabilities: [gpu]
+
+  sitesafe:
+    build: .
+    container_name: sitesafe-app
+    restart: unless-stopped
+    ports:
+      - "7860:7860"
+    depends_on:
+      - ollama
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      SITESAFE_MODEL: sitesafe
+    # Mount data/ so any DB rebuilds and exported PDFs persist on the host.
+    volumes:
+      - ./data:/app/data
+      - ./evaluation:/app/evaluation
+
+volumes:
+  ollama_data:
